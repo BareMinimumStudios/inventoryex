@@ -43,7 +43,7 @@ class AccSeeGUI(
     }
 
     override fun canModify(): Boolean {
-        return super.canModify() && Permissions.check(player, InvExPermissions.ACCSEE_MODIFY, 2)
+        return super.canModify() && Permissions.check(player, InvExPermissions.ACCSEE_MODIFY, 3)
     }
 
     private companion object {

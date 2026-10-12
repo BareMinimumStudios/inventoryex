@@ -23,6 +23,6 @@ class EndSeeGUI(
 
 
     override fun canModify(): Boolean {
-        return super.canModify() && Permissions.check(player, InvExPermissions.ENDSEE_MODIFY, 2)
+        return super.canModify() && Permissions.check(player, InvExPermissions.ENDSEE_MODIFY, 3)
     }
 }

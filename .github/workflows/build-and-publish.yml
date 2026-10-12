@@ -1,18 +1,27 @@
-name: "Build and Publish"
+name: Build and Publish
 
 on:
   push:
-    tags:
-      - v**
+    branches: [main]
+    tags: ['v*']
+  pull_request:
   workflow_dispatch:
+    inputs:
+      publish:
+        description: Publish to CurseForge and Modrinth
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: invex-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        loader: [fabric]
-        minecraft_version: [1.20.1, 1.21.1]
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-java@v5
@@ -21,29 +30,67 @@ jobs:
           java-version: |
             17
             21
-          cache: gradle
-
-      - name: Build
-        run: ./gradlew build
-
-      - name: Get mod metadata
-        id: mod-meta
+      - name: Configure Java toolchains
         run: |
-          version=$(grep "version =" build.gradle.kts | cut -d'=' -f2 | cut -d'"' -f2 | tr -d '\n')
-          echo "version=$version" >> $GITHUB_OUTPUT
+          echo "JDK17=$JAVA_HOME_17_X64" >> "$GITHUB_ENV"
+          echo "JDK21=$JAVA_HOME_21_X64" >> "$GITHUB_ENV"
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Build both Minecraft targets
+        run: ./gradlew build --console=plain
+      - name: Verify release packaging
+        run: python3 scripts/verify-release.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: invex-jars
+          path: build/libs/*.jar
+          if-no-files-found: error
 
-      - name: Publish
+  publish:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && inputs.publish)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        minecraft: ['1.20.1', '1.21.1']
+        include:
+          - minecraft: '1.20.1'
+            java: '17'
+          - minecraft: '1.21.1'
+            java: '21'
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/download-artifact@v4
+        with:
+          name: invex-jars
+          path: build/libs
+      - name: Read and validate release version
+        id: metadata
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+          IS_TAG: ${{ startsWith(github.ref, 'refs/tags/') }}
+        run: |
+          version=$(sed -n 's/^version = "\([^"]*\)"/\1/p' build.gradle.kts)
+          test -n "$version"
+          if [ "$IS_TAG" = true ]; then test "$RELEASE_TAG" = "v$version"; fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+      - name: Publish with MC Publish
         uses: Kir-Antipov/mc-publish@v3.3
         with:
           modrinth-id: g1ph7wAM
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-
           curseforge-id: 1584857
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
-
-          files: build/libs/*-(${{ matrix.minecraft_version }}).jar
-
-          version: ${{ steps.mod-meta.outputs.version }}
-
-          loaders: ${{ matrix.loader }}
-          game-versions: ${{ matrix.minecraft_version }}
+          files: build/libs/invex-${{ steps.metadata.outputs.version }}-${{ matrix.minecraft }}.jar
+          name: Inventory EX ${{ steps.metadata.outputs.version }} for Minecraft ${{ matrix.minecraft }}
+          version: ${{ steps.metadata.outputs.version }}+${{ matrix.minecraft }}
+          version-type: release
+          changelog-file: CHANGELOG.md
+          loaders: fabric
+          environment: server
+          game-versions: ${{ matrix.minecraft }}
+          java: ${{ matrix.java }}
+          dependencies: |
+            fabric-api(required)
+            fabric-language-kotlin(required)
+          fail-mode: fail

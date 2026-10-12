@@ -1,19 +1,18 @@
 [versions]
 # Common
-cloche = "0.18.4"
+# Cloche 0.19.x forces Kotlin 2.3, which breaks its bundled stub compiler plugin.
+cloche = "0.18.10"
 kotlin = "2.2.21"
-fabric-loader = "0.19.2"
+fabric-loader = "0.19.5"
 fabric-kotlin = "1.13.7+kotlin.2.2.21"
 # 1.20.1
-fabric-api-1201 = "0.92.9"
-opc-1201 = "2.0.0+1.20.1-beta.4-fabric"
+fabric-api-1201 = "0.92.12"
 sgui-1201 = "1.2.2+1.20"
 permissionsapi-1201 = "0.2-SNAPSHOT"
 trinkets-1201 = "3.7.2"
 accessories-1201 = "1.0.0-beta.47+1.20.1"
 # 1.21.1
-fabric-api-1211 = "0.116.12"
-opc-1211 = "2.0.0+1.21-beta.2-fabric"
+fabric-api-1211 = "0.116.17"
 sgui-1211 = "1.6.1+1.21.1"
 permissionsapi-1211 = "0.3.1"
 trinkets-1211 = "3.10.0"
@@ -24,15 +23,14 @@ cloche = { id = "earth.terrarium.cloche", version.ref = "cloche" }
 
 [libraries]
 # Common
+# Cloche 0.19.x forces Kotlin 2.3, which breaks its bundled stub compiler plugin.
 fabric-kotlin = { module = "net.fabricmc:fabric-language-kotlin", version.ref = "fabric-kotlin" }
 # 1.20.1
-opc-1201 = { module = "maven.modrinth:opc-directors-cut", version.ref = "opc-1201" }
 sgui-1201 = { module = "eu.pb4:sgui", version.ref = "sgui-1201" }
 permissionsapi-1201 = { module = "me.lucko:fabric-permissions-api", version.ref = "permissionsapi-1201" }
 trinkets-1201 = { module = "dev.emi:trinkets", version.ref = "trinkets-1201" }
 accessories-1201 = { module = "io.wispforest:accessories-fabric", version.ref = "accessories-1201" }
 # 1.21.1
-opc-1211 = { module = "maven.modrinth:opc-directors-cut", version.ref = "opc-1211" }
 sgui-1211 = { module = "eu.pb4:sgui", version.ref = "sgui-1211" }
 permissionsapi-1211 = { module = "me.lucko:fabric-permissions-api", version.ref = "permissionsapi-1211" }
 trinkets-1211 = { module = "dev.emi:trinkets", version.ref = "trinkets-1211" }

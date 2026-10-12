@@ -1,13 +1,11 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-	`maven-publish`
 	kotlin("jvm") version libs.versions.kotlin
 	alias(libs.plugins.cloche)
 }
 
 group = "xyz.naomieow.invex"
-version = "1.0.0"
+version = "1.0.1"
 
 repositories {
 	cloche.librariesMinecraft()
@@ -19,7 +17,6 @@ repositories {
 		mavenFabric()
 	}
 
-	maven("https://api.modrinth.com/maven")
 	maven("https://maven.nucleoid.xyz")
 	maven("https://maven.terraformersmc.com/")
 	maven("https://maven.ladysnake.org/releases")
@@ -30,13 +27,16 @@ repositories {
 cloche {
 	metadata {
 		modId = "invex"
-		name = "InvEx"
-		description = ""
+		name = "Inventory EX"
+		description = "Server-side inventory and Ender Chest viewer with offline player, Trinkets, and Accessories support."
 		license = "BML-1.0"
 
 		author {
 			name = "naomieow"
-			contact = "https://github.com/naomieow"
+		}
+
+		author {
+			name = "pokesmells"
 		}
 
 		url = "https://github.com/BareMinimumStudios/invex"
@@ -66,9 +66,6 @@ cloche {
 
 		dependencies {
 			fabricApi(libs.versions.fabric.api.get1201())
-
-			modImplementation(libs.opc.get1201())
-			include(libs.opc.get1201())
 			modImplementation(libs.sgui.get1201())
 			include(libs.sgui.get1201())
 			modImplementation(libs.permissionsapi.get1201())
@@ -107,9 +104,6 @@ cloche {
 
 		dependencies {
 			fabricApi(libs.versions.fabric.api.get1211())
-
-			modImplementation(libs.opc.get1211())
-			include(libs.opc.get1211())
 			modImplementation(libs.sgui.get1211())
 			include(libs.sgui.get1211())
 			modImplementation(libs.permissionsapi.get1211())
@@ -143,4 +137,29 @@ kotlin {
 	compilerOptions {
 		freeCompilerArgs = listOf("-Xmulti-platform", "-Xno-check-actual", "-Xexpect-actual-classes")
 	}
+}
+
+// Cloche remapping resolves these artifacts while preparing dependency access wideners.
+for (target in listOf("1201", "1211")) {
+    tasks.named("accessWiden${target}CommonMinecraft") {
+        dependsOn("generate${target}MappingsArtifact")
+    }
+}
+
+// Keep each release restricted to its tested Minecraft branch.
+for ((target, minecraft, java) in listOf(Triple("1201", "1.20.1", "17"), Triple("1211", "1.21.1", "21"))) {
+    tasks.named("generate${target}ModJson") {
+        doLast {
+            for (file in outputs.files.asFileTree.files.filter { it.name == "fabric.mod.json" }) {
+                @Suppress("UNCHECKED_CAST")
+                val metadata = groovy.json.JsonSlurper().parse(file) as MutableMap<String, Any>
+                @Suppress("UNCHECKED_CAST")
+                val dependencies = metadata["depends"] as MutableMap<String, Any>
+                dependencies["minecraft"] = "~$minecraft"
+                dependencies["java"] = ">=$java"
+                metadata["environment"] = "server"
+                file.writeText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(metadata)))
+            }
+        }
+    }
 }

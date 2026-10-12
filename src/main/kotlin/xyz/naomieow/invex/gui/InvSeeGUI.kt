@@ -30,6 +30,6 @@ class InvSeeGUI(
     }
 
     override fun canModify(): Boolean {
-        return super.canModify() && Permissions.check(player, InvExPermissions.INVSEE_MODIFY, 2)
+        return super.canModify() && Permissions.check(player, InvExPermissions.INVSEE_MODIFY, 3)
     }
 }

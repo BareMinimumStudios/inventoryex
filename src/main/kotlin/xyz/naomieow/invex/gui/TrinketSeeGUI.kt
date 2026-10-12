@@ -45,7 +45,7 @@ class TrinketSeeGUI(
     }
 
     override fun canModify(): Boolean {
-        return super.canModify() && Permissions.check(player, InvExPermissions.TRINKETSEE_MODIFY, 2)
+        return super.canModify() && Permissions.check(player, InvExPermissions.TRINKETSEE_MODIFY, 3)
     }
 
     private companion object {

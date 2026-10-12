@@ -1,6 +1,7 @@
 package xyz.naomieow.invex.command
 
-import com.bibireden.opc.api.OfflinePlayerCacheAPI
+import net.minecraft.world.level.storage.LevelResource
+import java.util.UUID
 import com.mojang.brigadier.StringReader
 import com.mojang.brigadier.suggestion.SuggestionProvider
 import me.lucko.fabric.api.permissions.v0.Permissions
@@ -27,7 +28,13 @@ object InvExCommands {
         stringReader.cursor = builder.start
         val prefix = stringReader.readString()
 
-        OfflinePlayerCacheAPI.getCache(ctx.source.server).usernames
+        ctx.source.server.getWorldPath(LevelResource.PLAYER_DATA_DIR).toFile()
+            .listFiles { file -> file.extension == "dat" }
+            .orEmpty()
+            .mapNotNull { file ->
+                val uuid = runCatching { UUID.fromString(file.nameWithoutExtension) }.getOrNull()
+                uuid?.let { ctx.source.server.profileCache?.get(it)?.orElse(null)?.name }
+            }
             .filter { it.startsWith(prefix, true) }
             .forEach(builder::suggest)
 

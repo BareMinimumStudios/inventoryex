@@ -15,8 +15,8 @@ object SeeCommand {
     fun executes(guiFn: (player: ServerPlayer, target: ServerPlayer) -> SeeGUI): (CommandContext<CommandSourceStack>) -> Int {
         return cb@ { ctx ->
             val profiles = GameProfileArgument.getGameProfiles(ctx, "target")
-            // Really shitty implementation
-            if (profiles.size > 1) {
+            // Selectors must resolve to exactly one profile.
+            if (profiles.size != 1) {
                 ctx.source.sendFailure(Component.translatableWithFallback(
                     "invex.command.error.one_player",
                     "Only one player is allowed, but the provided selector allows more than one"
@@ -24,7 +24,7 @@ object SeeCommand {
                 return@cb 0
             }
 
-            val targetPlayerProfile = profiles.first()
+            val targetPlayerProfile = profiles.firstOrNull()
 
             if (targetPlayerProfile == null) {
                 ctx.source.sendFailure(Component.translatableWithFallback(
@@ -53,7 +53,7 @@ object SeeCommand {
                 return@cb 0
             }
 
-            if (Permissions.check(targetPlayer, InvExPermissions.IMMUNE_VIEW, 3)) {
+            if (Permissions.check(targetPlayer, InvExPermissions.IMMUNE_VIEW, false)) {
                 ctx.source.sendFailure(Component.translatableWithFallback(
                     "invex.command.error.immune",
                     "%s is immune to being viewed",

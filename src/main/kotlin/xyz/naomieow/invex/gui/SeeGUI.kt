@@ -27,13 +27,16 @@ abstract class SeeGUI(
     protected val maxSize = 45
 
     override fun open(): Boolean {
-        title = Component.literal("${target.name.string}")
-        populate()
+        if (Permissions.check(target, InvExPermissions.IMMUNE_VIEW, false)) return false
+        title = target.name
+
 
         if (containerSize() > maxSize) {
             InvEx.warn("Container size is too large. Expected <=$maxSize but got ${containerSize()}")
             return false
         }
+
+        populate()
 
         var slot = containerSize() + ((45 - containerSize()) % 9)
 
@@ -151,7 +154,13 @@ abstract class SeeGUI(
         if (canModify()) {
             target.`invex$saveData`()
         }
-        if (index <= virtualSize) {
+        // These actions can reach redirected target slots from the viewer's inventory.
+        if (!canModify() && (action == net.minecraft.world.inventory.ClickType.QUICK_MOVE
+                    || action == net.minecraft.world.inventory.ClickType.QUICK_CRAFT
+                    || action == net.minecraft.world.inventory.ClickType.PICKUP_ALL)) {
+            return false
+        }
+        if (index < virtualSize) {
             return canModify()
         }
         // Always can modify own inventory
@@ -191,11 +200,7 @@ abstract class SeeGUI(
     }
 
     open fun canModify(): Boolean {
-        var res = false
-        Permissions.check(target.uuid, InvExPermissions.IMMUNE_MODIFY).thenAcceptAsync {
-             res = it
-        }
-        return !res
+        return !Permissions.check(target, InvExPermissions.IMMUNE_MODIFY, false)
     }
 
     protected companion object {

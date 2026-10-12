@@ -32,7 +32,7 @@ actual fun MinecraftServer.getOfflinePlayer(gameProfile: GameProfile): ServerPla
 
     if (targetPlayer == null) {
         targetPlayer = this.playerList.getPlayerForLogin(gameProfile)
-        val tag = this.playerList.load(targetPlayer)
+        val tag = this.playerList.load(targetPlayer) ?: return null
         if (tag != null) {
             val level = this.getLevel(
                 DimensionType.parseLegacy(
@@ -40,7 +40,7 @@ actual fun MinecraftServer.getOfflinePlayer(gameProfile: GameProfile): ServerPla
                         NbtOps.INSTANCE,
                         tag.get("Dimension")
                     )
-                ).result().get()
+                ).result().orElse(net.minecraft.world.level.Level.OVERWORLD)
             )
 
             if (level != null) {

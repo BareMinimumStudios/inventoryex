@@ -20,8 +20,7 @@ actual fun Player.`invex$saveData`() {
     try {
         val tag = this.saveWithoutId(CompoundTag())
         val file = File.createTempFile("${this.stringUUID}.tmp", ".dat", dir)
-        val os = FileOutputStream(file)
-        NbtIo.writeCompressed(tag, os)
+        FileOutputStream(file).use { NbtIo.writeCompressed(tag, it) }
         val current = File(dir, "${this.stringUUID}.dat")
         val old = File(dir, "${this.stringUUID}.dat_old")
         Util.safeReplaceFile(current.toPath(), file.toPath(), old.toPath())
@@ -36,6 +35,7 @@ actual fun MinecraftServer.getOfflinePlayer(gameProfile: GameProfile): ServerPla
     if (targetPlayer == null) {
         targetPlayer = this.playerList.getPlayerForLogin(gameProfile, ClientInformation.createDefault())
         val tagOpt = this.playerList.load(targetPlayer)
+        if (tagOpt.isEmpty) return null
         if (tagOpt.isPresent) {
             val tag = tagOpt.get()
             if (tag.contains("Dimension")) {
@@ -45,7 +45,7 @@ actual fun MinecraftServer.getOfflinePlayer(gameProfile: GameProfile): ServerPla
                             NbtOps.INSTANCE,
                             tag.get("Dimension")
                         )
-                    ).result().get()
+                    ).result().orElse(net.minecraft.world.level.Level.OVERWORLD)
                 )
 
                 if (level != null) {
