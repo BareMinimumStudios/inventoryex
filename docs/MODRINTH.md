@@ -75,7 +75,7 @@ Read-only access blocks moving items through direct clicks, shift-click, draggin
 
 ## Building and publishing
 
-The project uses Gradle **9.8.0**, Kotlin, and Cloche. Install Java 17 and 21 and expose their installation directories through `JDK17` and `JDK21` when Gradle cannot discover them.
+The project uses Gradle **9.9.2**, Kotlin, and Cloche. Install Java 17 and 21 and expose their installation directories through `JDK17` and `JDK21` when Gradle cannot discover them.
 
 ```sh
 ./gradlew build

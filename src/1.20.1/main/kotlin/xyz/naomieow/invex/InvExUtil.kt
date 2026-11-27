@@ -9,12 +9,13 @@ import net.minecraft.nbt.NbtOps
 import net.minecraft.server.MinecraftServer
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.entity.player.Player
+import net.minecraft.world.level.Level
 import net.minecraft.world.level.dimension.DimensionType
 import net.minecraft.world.level.storage.LevelResource
 import java.io.File
 
 actual fun Player.`invex$saveData`() {
-    val dir = this.server?.getWorldPath(LevelResource.PLAYER_DATA_DIR)?.toFile()
+    val dir = this.server?.getWorldPath(LevelResource.PLAYER_DATA_DIR)?.toFile() ?: return
     try {
         val tag = this.saveWithoutId(CompoundTag())
         val file = File.createTempFile("${this.stringUUID}.tmp", ".dat", dir)
@@ -33,14 +34,14 @@ actual fun MinecraftServer.getOfflinePlayer(gameProfile: GameProfile): ServerPla
     if (targetPlayer == null) {
         targetPlayer = this.playerList.getPlayerForLogin(gameProfile)
         val tag = this.playerList.load(targetPlayer) ?: return null
-        if (tag != null) {
+        if (tag.contains("Dimension")) {
             val level = this.getLevel(
                 DimensionType.parseLegacy(
                     Dynamic(
                         NbtOps.INSTANCE,
                         tag.get("Dimension")
                     )
-                ).result().orElse(net.minecraft.world.level.Level.OVERWORLD)
+                ).result().orElse(Level.OVERWORLD)
             )
 
             if (level != null) {

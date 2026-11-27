@@ -8,7 +8,6 @@ import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerPlayer
 import xyz.naomieow.invex.InvExPermissions
 import xyz.naomieow.invex.gui.SeeGUI
-import kotlin.collections.first
 import xyz.naomieow.invex.getOfflinePlayer
 
 object SeeCommand {

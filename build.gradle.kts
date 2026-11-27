@@ -1,11 +1,12 @@
-
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
 plugins {
 	kotlin("jvm") version libs.versions.kotlin
 	alias(libs.plugins.cloche)
 }
 
 group = "xyz.naomieow.invex"
-version = "1.0.1"
+version = "1.0.2"
 
 repositories {
 	cloche.librariesMinecraft()
@@ -152,13 +153,13 @@ for ((target, minecraft, java) in listOf(Triple("1201", "1.20.1", "17"), Triple(
         doLast {
             for (file in outputs.files.asFileTree.files.filter { it.name == "fabric.mod.json" }) {
                 @Suppress("UNCHECKED_CAST")
-                val metadata = groovy.json.JsonSlurper().parse(file) as MutableMap<String, Any>
+                val metadata = JsonSlurper().parse(file) as MutableMap<String, Any>
                 @Suppress("UNCHECKED_CAST")
                 val dependencies = metadata["depends"] as MutableMap<String, Any>
                 dependencies["minecraft"] = "~$minecraft"
                 dependencies["java"] = ">=$java"
                 metadata["environment"] = "server"
-                file.writeText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(metadata)))
+                file.writeText(JsonOutput.prettyPrint(JsonOutput.toJson(metadata)))
             }
         }
     }

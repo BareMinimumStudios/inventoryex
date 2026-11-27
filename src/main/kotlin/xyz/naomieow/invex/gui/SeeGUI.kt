@@ -7,6 +7,7 @@ import me.lucko.fabric.api.permissions.v0.Permissions
 import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.Container
+import net.minecraft.world.inventory.ClickType as InventoryClickType
 import net.minecraft.world.inventory.MenuType
 import net.minecraft.world.item.Items
 import xyz.naomieow.invex.InvEx
@@ -30,7 +31,6 @@ abstract class SeeGUI(
         if (Permissions.check(target, InvExPermissions.IMMUNE_VIEW, false)) return false
         title = target.name
 
-
         if (containerSize() > maxSize) {
             InvEx.warn("Container size is too large. Expected <=$maxSize but got ${containerSize()}")
             return false
@@ -51,7 +51,7 @@ abstract class SeeGUI(
             .setItem(Items.BARRIER)
             .glow()
             .setName(Component.translatableWithFallback("invex.exit", "Exit"))
-            .setCallback { i, type, action ->
+            .setCallback { _, _, _ ->
                 this.close()
             }
         )
@@ -62,7 +62,7 @@ abstract class SeeGUI(
                 .setItem(Items.STRUCTURE_VOID)
                 .glow()
                 .setName(Component.translatableWithFallback("invex.return", "Return"))
-                .setCallback { i, type, action ->
+                .setCallback { _, _, _ ->
                     returnGui.open()
                 }
             )
@@ -77,7 +77,7 @@ abstract class SeeGUI(
                     "invex.open.inventory",
                     "Open Inventory"
                 ))
-                .setCallback { i, type, action ->
+                .setCallback { _, _, _ ->
                     val gui = InvSeeGUI(player, target, this)
                     gui.open()
                 }
@@ -94,7 +94,7 @@ abstract class SeeGUI(
                         "invex.open.ender_chest",
                         "Open Ender Chest"
                     ))
-                    .setCallback { i, type, action ->
+                    .setCallback { _, _, _ ->
                         val gui = EndSeeGUI(player, target, this)
                         gui.open()
                     }
@@ -111,7 +111,7 @@ abstract class SeeGUI(
                         "invex.open.trinkets",
                         "Open Trinkets"
                     ))
-                    .setCallback { i, type, action ->
+                    .setCallback { _, _, _ ->
                         val gui = TrinketSeeGUI(player, target, this)
                         gui.open()
                     }
@@ -128,7 +128,7 @@ abstract class SeeGUI(
                         "invex.open.accessories",
                         "Open Accessories"
                     ))
-                    .setCallback { i, type, action ->
+                    .setCallback { _, _, _ ->
                         val gui = AccSeeGUI(player, target, this)
                         gui.open()
                     }
@@ -149,19 +149,17 @@ abstract class SeeGUI(
     override fun onAnyClick(
         index: Int,
         type: ClickType?,
-        action: net.minecraft.world.inventory.ClickType?
+        action: InventoryClickType?
     ): Boolean {
-        if (canModify()) {
-            target.`invex$saveData`()
-        }
+        val editable = canModify()
         // These actions can reach redirected target slots from the viewer's inventory.
-        if (!canModify() && (action == net.minecraft.world.inventory.ClickType.QUICK_MOVE
-                    || action == net.minecraft.world.inventory.ClickType.QUICK_CRAFT
-                    || action == net.minecraft.world.inventory.ClickType.PICKUP_ALL)) {
+        if (!editable && (action == InventoryClickType.QUICK_MOVE
+                    || action == InventoryClickType.QUICK_CRAFT
+                    || action == InventoryClickType.PICKUP_ALL)) {
             return false
         }
         if (index < virtualSize) {
-            return canModify()
+            return editable
         }
         // Always can modify own inventory
         return true

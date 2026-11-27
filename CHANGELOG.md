@@ -1,3 +1,13 @@
+# Inventory EX 1.0.2
+
+- Upgrade Gradle to 9.9.2 with checksum verification and download retries.
+- Update Fabric Loader to 0.20.1 and Fabric API for Minecraft 1.21.1 to 0.116.18.
+- Update build, artifact transfer, and MC Publish actions.
+- Replace fully qualified code references with imports and a clear ClickType alias.
+- Check editing permissions once per click and save inventory changes on menu close.
+- Skip malformed missing-dimension data safely and avoid saving without a server.
+- Strengthen release validation, including when Python assertions are disabled.
+
 # Inventory EX 1.0.1
 
 - Operators no longer gain inventory viewing or editing immunity by default.

@@ -3,7 +3,7 @@
 # Cloche 0.19.x forces Kotlin 2.3, which breaks its bundled stub compiler plugin.
 cloche = "0.18.10"
 kotlin = "2.2.21"
-fabric-loader = "0.19.5"
+fabric-loader = "0.20.1"
 fabric-kotlin = "1.13.7+kotlin.2.2.21"
 # 1.20.1
 fabric-api-1201 = "0.92.12"
@@ -12,7 +12,7 @@ permissionsapi-1201 = "0.2-SNAPSHOT"
 trinkets-1201 = "3.7.2"
 accessories-1201 = "1.0.0-beta.47+1.20.1"
 # 1.21.1
-fabric-api-1211 = "0.116.17"
+fabric-api-1211 = "0.116.18"
 sgui-1211 = "1.6.1+1.21.1"
 permissionsapi-1211 = "0.3.1"
 trinkets-1211 = "3.10.0"
@@ -23,7 +23,6 @@ cloche = { id = "earth.terrarium.cloche", version.ref = "cloche" }
 
 [libraries]
 # Common
-# Cloche 0.19.x forces Kotlin 2.3, which breaks its bundled stub compiler plugin.
 fabric-kotlin = { module = "net.fabricmc:fabric-language-kotlin", version.ref = "fabric-kotlin" }
 # 1.20.1
 sgui-1201 = { module = "eu.pb4:sgui", version.ref = "sgui-1201" }
