@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       publish:
-        description: Publish to CurseForge and Modrinth
+        description: Publish to CurseForge, Modrinth, and GitHub Releases
         type: boolean
         default: false
 
@@ -22,8 +22,22 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.metadata.outputs.version }}
+      tag: ${{ steps.metadata.outputs.tag }}
     steps:
       - uses: actions/checkout@v7.0.1
+      - name: Read and validate release version
+        id: metadata
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+          IS_TAG: ${{ startsWith(github.ref, 'refs/tags/') }}
+        run: |
+          version=$(sed -n 's/^version = "\([^"]*\)"/\1/p' build.gradle.kts)
+          test -n "$version"
+          if [ "$IS_TAG" = true ]; then test "$RELEASE_TAG" = "v$version"; fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=v$version" >> "$GITHUB_OUTPUT"
       - uses: actions/setup-java@v6.3.0
         with:
           distribution: temurin
@@ -66,16 +80,6 @@ jobs:
         with:
           name: invex-jars
           path: build/libs
-      - name: Read and validate release version
-        id: metadata
-        env:
-          RELEASE_TAG: ${{ github.ref_name }}
-          IS_TAG: ${{ startsWith(github.ref, 'refs/tags/') }}
-        run: |
-          version=$(sed -n 's/^version = "\([^"]*\)"/\1/p' build.gradle.kts)
-          test -n "$version"
-          if [ "$IS_TAG" = true ]; then test "$RELEASE_TAG" = "v$version"; fi
-          echo "version=$version" >> "$GITHUB_OUTPUT"
       - name: Publish with MC Publish
         uses: Kir-Antipov/mc-publish@v3.3.2
         with:
@@ -83,9 +87,9 @@ jobs:
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           curseforge-id: 1584857
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
-          files: build/libs/invex-${{ steps.metadata.outputs.version }}-${{ matrix.minecraft }}.jar
-          name: Inventory EX ${{ steps.metadata.outputs.version }} for Minecraft ${{ matrix.minecraft }}
-          version: ${{ steps.metadata.outputs.version }}+${{ matrix.minecraft }}
+          files: build/libs/invex-${{ needs.build.outputs.version }}-${{ matrix.minecraft }}.jar
+          name: ${{ needs.build.outputs.version }}+${{ matrix.minecraft }}-fabric
+          version: ${{ needs.build.outputs.version }}+${{ matrix.minecraft }}-fabric
           version-type: release
           changelog-file: CHANGELOG.md
           loaders: fabric
@@ -95,4 +99,33 @@ jobs:
           dependencies: |
             fabric-api(required)
             fabric-language-kotlin(required)
+          fail-mode: fail
+
+  publish-github:
+    name: GitHub release
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && inputs.publish)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/download-artifact@v8.0.2
+        with:
+          name: invex-jars
+          path: build/libs
+      - name: Publish GitHub release with both Minecraft targets
+        uses: Kir-Antipov/mc-publish@v3.3.2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-tag: ${{ needs.build.outputs.tag }}
+          github-commitish: ${{ github.sha }}
+          github-prerelease: false
+          files: |
+            build/libs/invex-${{ needs.build.outputs.version }}-1.20.1.jar
+            build/libs/invex-${{ needs.build.outputs.version }}-1.21.1.jar
+          name: Inventory EX ${{ needs.build.outputs.version }}
+          version: ${{ needs.build.outputs.version }}
+          version-type: release
+          changelog-file: CHANGELOG.md
           fail-mode: fail
