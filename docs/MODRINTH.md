@@ -1,104 +1,122 @@
-<p align="center">
-  <img src="https://raw.githubusercontent.com/BareMinimumStudios/invex/main/docs/assets/inventory-ex-banner.png" alt="Inventory EX" />
-</p>
+![Inventory EX](https://raw.githubusercontent.com/BareMinimumStudios/invex/main/docs/assets/inventory-ex-banner.png)
 
-<p align="center">
-  <a href="https://github.com/BareMinimumStudios/invex/blob/main/LICENSE"><img alt="BML 1.0 License" src="https://img.shields.io/badge/LICENSE-BML%201.0-FFFFFF?style=for-the-badge&labelColor=1A1A1A" /></a>
-  <a href="https://github.com/BareMinimumStudios/invex/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/BareMinimumStudios/invex?style=for-the-badge&logo=github&labelColor=1A1A1A&color=FFFFFF" /></a>
-</p>
-
-<p align="center">
-  <a href="https://www.curseforge.com/minecraft/mc-mods/inventoryex"><img alt="Available on CurseForge" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/curseforge_vector.svg" /></a>
-  <a href="https://modrinth.com/mod/inventoryex"><img alt="Available on Modrinth" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/modrinth_vector.svg" /></a>
-  <img alt="Fabric" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/fabric_vector.svg" />
-</p>
-
-<p align="center"><strong>Minecraft 1.20.1 + 1.21.1 · Fabric · Server-side</strong></p>
+**Fabric · Minecraft 1.20.1 and 1.21.1 · Server-side**
 
 # Inventory EX
 
-Inventory EX lets server staff inspect and manage player inventories and Ender Chests, including saved inventories of offline players. It also supports Trinkets and Accessories when those mods are installed. Players can use ordinary Minecraft clients; install Inventory EX and its required dependencies on the server.
+Inventory EX gives server staff a clear view of player inventories and Ender Chests, with permission-controlled editing and support for saved offline players. Optional Trinkets and Accessories integration brings equipment slots into the same workflow.
 
-Maintained by **Bare Minimum Studios**. Authors: [naomieow](https://github.com/naomieow) and [pokesmells](https://github.com/pokesmells).
+Install it on your Fabric server. Players do not need Inventory EX on their clients.
 
-## Commands
+## Features
 
-| Command | Opens |
-| --- | --- |
-| `/invsee <name>` | Main inventory, armor, and offhand |
-| `/endsee <name>` | Ender Chest |
-| `/trinketsee <name>` | Trinkets; hidden when the Accessories compatibility layer is active |
-| `/accsee <name>` | Accessories |
-
-Commands must be used by a player and target exactly one player. Offline targets need existing saved player data. Name suggestions include online players and saved offline players whose profiles are cached by Minecraft.
-
-## Permissions
-
-With vanilla permissions, **operator level 2 can view** and **level 3 can edit**. Operators can have their inventories viewed and edited by authorized staff; operator status does not grant immunity.
-
-With a permissions provider such as LuckPerms, grant individual permissions:
-
-| Viewer permission | Editing permission |
-| --- | --- |
-| `invex.invsee.command` | `invex.invsee.modify` |
-| `invex.endsee.command` | `invex.endsee.modify` |
-| `invex.trinketsee.command` | `invex.trinketsee.modify` |
-| `invex.accsee.command` | `invex.accsee.modify` |
-
-Explicitly granting `invex.immune.view` protects a target from viewing. Granting `invex.immune.modify` allows viewing but blocks editing. Neither permission is granted by vanilla operator status. Wildcard permissions can grant immunity too; set these nodes to false if staff should remain inspectable.
+- Inspect a player's main inventory, hotbar, armor, and offhand.
+- Open Ender Chests without asking the player to log in.
+- View saved inventories for offline players who have existing world data.
+- Keep viewing and editing permissions separate for each command.
+- Inspect operators too; operator status does not grant immunity.
+- Switch between available inventory and equipment menus using the menu buttons.
+- Inspect Trinkets or Accessories when those mods are installed.
 
 ## Installation
 
-1. Choose the Inventory EX file matching your server's Minecraft version.
-2. Install Fabric Loader, Fabric API, and Fabric Language Kotlin.
-3. Place the Inventory EX JAR in the server's `mods` folder and restart the server.
-4. Grant staff the appropriate operator level or permissions, then use the commands below.
+1. Download the Inventory EX file for your server's Minecraft version.
+2. Install Fabric Loader, Fabric API, and Fabric Language Kotlin on the server.
+3. Put the Inventory EX JAR in the server's `mods` folder and restart it.
+4. Grant staff the appropriate operator level or permission nodes, then use `/invsee <name>`.
 
-Install Trinkets or Accessories only if you want to inspect those mods' equipment slots. Inventory EX does not add either equipment system itself.
+### Supported versions
 
-## Requirements
-
-| Minecraft | Java | Required mods |
+| Minecraft | Java | Fabric API |
 | --- | --- | --- |
-| 1.20.1 | 17 or newer | Fabric API, Fabric Language Kotlin |
-| 1.21.1 | 21 or newer | Fabric API, Fabric Language Kotlin |
+| 1.20.1 | 17 or newer | 0.92.12 or newer for 1.20.1 |
+| 1.21.1 | 21 or newer | 0.116.18 or newer for 1.21.1 |
 
-Trinkets and Accessories are optional. SGUI and Fabric Permissions API are bundled. Offline player lookup uses Minecraft's own profile cache and saved player files.
+The current build uses Fabric Loader 0.20.1 and requires Fabric Language Kotlin 1.13.7+kotlin.2.2.21 or newer. Use dependency files matching your Minecraft version. SGUI and Fabric Permissions API are bundled with Inventory EX.
 
-## Offline players and optional integrations
+Trinkets and Accessories are optional. Install them only if your server uses their equipment systems; Inventory EX does not add those systems itself.
 
-Offline inventories come from the world's saved player data. A player who has never joined the server has no saved inventory to inspect. Minecraft's profile cache supplies offline name suggestions; type the full name when a suggestion is unavailable.
+## Commands
 
-Trinkets and Accessories commands appear only when the corresponding mod is installed. The Trinkets command is hidden when its Accessories compatibility layer is active, so the same equipment system is not exposed through duplicate menus.
+| Command | Opens | Availability |
+| --- | --- | --- |
+| `/invsee <name>` | Main inventory, hotbar, armor, and offhand | Always |
+| `/endsee <name>` | Ender Chest | Always |
+| `/trinketsee <name>` | Trinkets equipment | Trinkets installed and its Accessories compatibility layer inactive |
+| `/accsee <name>` | Accessories equipment | Accessories installed |
 
-Read-only access blocks moving items through direct clicks, shift-click, dragging, and double-click collection. Staff with editing permission can change the target inventory; changes to saved offline inventories are written back when the menu closes.
+Run commands in-game as a player and select exactly one target. The menus include navigation buttons for the inventory types you have permission to open.
 
-## Building and publishing
+## Permissions
 
-The project uses Gradle **9.9.2**, Kotlin, and Cloche. Install Java 17 and 21 and expose their installation directories through `JDK17` and `JDK21` when Gradle cannot discover them.
+With vanilla operator permissions, **level 2 can view** and **level 3 can edit**. Authorized staff can inspect operators; becoming an operator does not make a player immune.
 
-```sh
-./gradlew build
-```
+With a Fabric Permissions API provider such as LuckPerms, configure viewing and editing separately:
 
-On Windows, use `gradlew.bat build`. Both Minecraft targets are built together.
+| Inventory type | View permission | Edit permission |
+| --- | --- | --- |
+| Inventory | `invex.invsee.command` | `invex.invsee.modify` |
+| Ender Chest | `invex.endsee.command` | `invex.endsee.modify` |
+| Trinkets | `invex.trinketsee.command` | `invex.trinketsee.modify` |
+| Accessories | `invex.accsee.command` | `invex.accsee.modify` |
 
-GitHub Actions validates pushes and pull requests, then uses **MC Publish** to upload each target to CurseForge and Modrinth on a matching `v<version>` tag. Manual runs build by default; select **Publish** to upload. Set repository secrets `CURSEFORGE_TOKEN` and `MODRINTH_TOKEN` before publishing. See [publishing guide](https://github.com/BareMinimumStudios/invex/blob/main/PUBLISHING.md) for project IDs, release steps, and listing assets.
+Grant the view permission to open a menu and the matching edit permission to change its contents. Viewing access alone blocks direct item moves, shift-click transfers, dragging, and double-click collection involving the target inventory.
 
-## Links
+### Optional immunity
+
+| Target permission | Effect |
+| --- | --- |
+| `invex.immune.view` | Prevents the target's inventories from being opened |
+| `invex.immune.modify` | Allows viewing but prevents editing |
+
+Immunity is opt-in through your permissions provider. Wildcard grants can include these nodes; explicitly set them to `false` if those staff accounts should remain inspectable.
+
+## Offline players and saving
+
+Offline inventories are loaded from the world's saved player data. A player who has never joined that world has no saved inventory to inspect. Name suggestions include online players and saved offline players whose profiles Minecraft has cached.
+
+Changes to a saved offline inventory are written back when an editable menu closes. Close the menu after editing before checking the saved result. Keep your normal world backups when managing player data.
+
+## Equipment integration
+
+Trinkets and Accessories commands appear only when the corresponding mod is installed. The Trinkets command is hidden when its Accessories compatibility layer is active, avoiding duplicate access to the same equipment system.
+
+The current menus support up to **45 target slots**. Equipment layouts with more than 45 slots cannot be opened; there is no paginated equipment view in this version.
+
+## Common questions
+
+### Do players need the mod installed
+
+No. Inventory EX is installed on the server and uses ordinary inventory menus. Other mods on your server may have their own client requirements.
+
+### Why can I view an inventory but not edit it
+
+Viewing and editing are separate permissions. Check the matching `.modify` node, your operator level, and whether the target has `invex.immune.modify`.
+
+### Why is an operator still protected
+
+Check explicit immunity permissions and wildcard grants in your permissions provider. Operator status alone does not enable immunity.
+
+### Why is an offline name missing
+
+The world must contain saved data for that player, and name suggestions depend on Minecraft's cached profiles. Inventory EX does not create an inventory for a player who has never joined.
+
+## Authors and support
+
+Maintained by **Bare Minimum Studios**. Authors: [naomieow](https://github.com/naomieow) and [pokesmells](https://github.com/pokesmells).
 
 - [CurseForge](https://www.curseforge.com/minecraft/mc-mods/inventoryex)
 - [Modrinth](https://modrinth.com/mod/inventoryex)
 - [Source](https://github.com/BareMinimumStudios/invex)
-- [Issues](https://github.com/BareMinimumStudios/invex/issues)
+- [Report an issue](https://github.com/BareMinimumStudios/invex/issues)
 - [Discord](https://discord.gg/pcRw79hwey)
+
+When reporting a problem, include your Minecraft and Inventory EX versions, the relevant command, your permissions setup, and whether the target was online or offline.
 
 ## Sponsor
 
-[![Sponsor Banner](https://www.bisecthosting.com/partners/custom-banners/db76a74a-a111-4660-98b7-5a75c15a5951.png)](https://bisecthosting.com/bareminimum)
-
-Use code **`bareminimum`** to get **25% off your first month**!
+[BisectHosting](https://bisecthosting.com/bareminimum) supports Bare Minimum Studios. Use code **`bareminimum`** for **25% off your first month**.
 
 ## License
 
-Inventory EX is licensed under the **Bare Minimum License v1.0**. See [LICENSE](https://github.com/BareMinimumStudios/invex/blob/main/LICENSE).
+Inventory EX is licensed under the **Bare Minimum License v1.0**. See the [license](https://github.com/BareMinimumStudios/invex/blob/main/LICENSE).

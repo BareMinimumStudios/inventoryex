@@ -24,6 +24,6 @@ The build job produces both targets once. Publishing downloads those verified ar
 - CurseForge description: `docs/CURSEFORGE.md`.
 - Modrinth description: `docs/MODRINTH.md`.
 
-Both descriptions include the full command and permission reference, installation steps, requirements, offline-player behavior, optional integrations, authors, support, sponsor, license, and build information. Their banner and repository links are absolute URLs suitable for platform descriptions. Upload the artwork before publishing the descriptions so the banner URL is available.
+Both descriptions include the full command and permission reference, installation steps, requirements, offline-player behavior, optional integrations, authors, support, sponsor, and license information. Their banner and repository links are absolute URLs suitable for platform descriptions. Upload the artwork before publishing the descriptions so the banner URL is available.
 
 MC Publish publishes files and changelogs. Updating the listing description, icon, banner, or platform authorship requires project-owner access to each platform's project settings. CurseForge already lists **pokesmells** as owner. Mod metadata does not change platform membership.
