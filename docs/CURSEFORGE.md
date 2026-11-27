@@ -119,4 +119,4 @@ When reporting a problem, include your Minecraft and Inventory EX versions, the 
 
 ## License
 
-Inventory EX is licensed under the **Bare Minimum License v1.0**. See the [license](https://github.com/BareMinimumStudios/invex/blob/main/LICENSE).
+Inventory EX is licensed under the **Bare Minimum License v1.1**. See the [license](https://github.com/BareMinimumStudios/invex/blob/main/LICENSE).

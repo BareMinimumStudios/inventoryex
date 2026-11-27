@@ -30,7 +30,7 @@ cloche {
 		modId = "invex"
 		name = "Inventory EX"
 		description = "Server-side inventory and Ender Chest viewer with offline player, Trinkets, and Accessories support."
-		license = "BML-1.0"
+		license = "BML-1.1"
 
 		author {
 			name = "naomieow"
@@ -163,4 +163,8 @@ for ((target, minecraft, java) in listOf(Triple("1201", "1.20.1", "17"), Triple(
             }
         }
     }
+}
+
+tasks.withType<Jar>().matching { it.name in setOf("1201Jar", "1211Jar") }.configureEach {
+    from(rootProject.file("LICENSE"))
 }

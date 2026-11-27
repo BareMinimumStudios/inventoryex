@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="LICENSE"><img alt="BML 1.0 License" src="https://img.shields.io/badge/LICENSE-BML%201.0-FFFFFF?style=for-the-badge&labelColor=1A1A1A" /></a>
+  <a href="LICENSE"><img alt="BML 1.1 License" src="https://img.shields.io/badge/LICENSE-BML%201.1-FFFFFF?style=for-the-badge&labelColor=1A1A1A" /></a>
   <a href="https://github.com/BareMinimumStudios/invex/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/BareMinimumStudios/invex?style=for-the-badge&logo=github&labelColor=1A1A1A&color=FFFFFF" /></a>
 </p>
 
@@ -144,4 +144,4 @@ When reporting a problem, include your Minecraft and Inventory EX versions, the 
 
 ## License
 
-Inventory EX is licensed under the **Bare Minimum License v1.0**. See the [license](https://github.com/BareMinimumStudios/invex/blob/main/LICENSE).
+Inventory EX is licensed under the **Bare Minimum License v1.1**. See the [license](https://github.com/BareMinimumStudios/invex/blob/main/LICENSE).
