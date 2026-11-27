@@ -41,3 +41,6 @@ replay_*.log
 
 # kotlin
 .kotlin/
+# Python release helpers
+__pycache__/
+*.pyc

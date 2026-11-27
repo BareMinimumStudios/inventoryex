@@ -17,7 +17,11 @@ import java.io.File
 import java.io.FileOutputStream
 
 actual fun Player.`invex$saveData`() {
-    val dir = this.server?.getWorldPath(LevelResource.PLAYER_DATA_DIR)?.toFile() ?: return
+    val server = this.server ?: return
+    val activePlayer = server.playerList.getPlayer(uuid)
+    // An offline snapshot must never overwrite a player who has since logged in.
+    if (activePlayer != null && activePlayer !== this) return
+    val dir = server.getWorldPath(LevelResource.PLAYER_DATA_DIR).toFile()
     try {
         val tag = this.saveWithoutId(CompoundTag())
         val file = File.createTempFile("${this.stringUUID}.tmp", ".dat", dir)
@@ -31,31 +35,15 @@ actual fun Player.`invex$saveData`() {
 }
 
 actual fun MinecraftServer.getOfflinePlayer(gameProfile: GameProfile): ServerPlayer? {
-    var targetPlayer = this.playerList.getPlayerByName(gameProfile.name)
+    playerList.getPlayer(gameProfile.id)?.let { return it }
 
-    if (targetPlayer == null) {
-        targetPlayer = this.playerList.getPlayerForLogin(gameProfile, ClientInformation.createDefault())
-        val tagOpt = this.playerList.load(targetPlayer)
-        if (tagOpt.isEmpty) return null
-        if (tagOpt.isPresent) {
-            val tag = tagOpt.get()
-            if (tag.contains("Dimension")) {
-                val level = this.getLevel(
-                    DimensionType.parseLegacy(
-                        Dynamic(
-                            NbtOps.INSTANCE,
-                            tag.get("Dimension")
-                        )
-                    ).result().orElse(Level.OVERWORLD)
-                )
-
-                if (level != null) {
-                    targetPlayer.setServerLevel(level)
-                }
-            }
-        }
+    val targetPlayer = playerList.getPlayerForLogin(gameProfile, ClientInformation.createDefault())
+    val tag = playerList.load(targetPlayer).orElse(null) ?: return null
+    tag.get("Dimension")?.let { dimension ->
+        val dimensionKey = DimensionType.parseLegacy(Dynamic(NbtOps.INSTANCE, dimension))
+            .result().orElse(Level.OVERWORLD)
+        getLevel(dimensionKey)?.let(targetPlayer::setServerLevel)
     }
-
     return targetPlayer
 }
 

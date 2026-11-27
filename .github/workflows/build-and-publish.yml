@@ -32,12 +32,9 @@ jobs:
         env:
           RELEASE_TAG: ${{ github.ref_name }}
           IS_TAG: ${{ startsWith(github.ref, 'refs/tags/') }}
-        run: |
-          version=$(sed -n 's/^version = "\([^"]*\)"/\1/p' build.gradle.kts)
-          test -n "$version"
-          if [ "$IS_TAG" = true ]; then test "$RELEASE_TAG" = "v$version"; fi
-          echo "version=$version" >> "$GITHUB_OUTPUT"
-          echo "tag=v$version" >> "$GITHUB_OUTPUT"
+        run: python3 scripts/release_notes.py --github-output "$GITHUB_OUTPUT"
+      - name: Check release-note handling
+        run: python3 -m unittest discover -s scripts -p 'test_*.py'
       - uses: actions/setup-java@v6.3.0
         with:
           distribution: temurin
@@ -51,14 +48,12 @@ jobs:
       - uses: gradle/actions/setup-gradle@v6.4.1
       - name: Build both Minecraft targets
         run: ./gradlew build --console=plain
-      - name: Verify release packaging
-        run: python3 scripts/verify-release.py
+      - name: Validate and stage release files
+        run: python3 scripts/prepare_release.py
       - uses: actions/upload-artifact@v7.0.2
         with:
           name: invex-jars
-          path: |
-            build/libs/invex-*-1.20.1.jar
-            build/libs/invex-*-1.21.1.jar
+          path: build/release/*
           if-no-files-found: error
 
   publish:
@@ -79,7 +74,7 @@ jobs:
       - uses: actions/download-artifact@v8.0.2
         with:
           name: invex-jars
-          path: build/libs
+          path: build/release
       - name: Publish with MC Publish
         uses: Kir-Antipov/mc-publish@v3.3.2
         with:
@@ -87,11 +82,11 @@ jobs:
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           curseforge-id: 1584857
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
-          files: build/libs/invex-${{ needs.build.outputs.version }}-${{ matrix.minecraft }}.jar
+          files: build/release/invex-${{ needs.build.outputs.version }}-${{ matrix.minecraft }}.jar
           name: ${{ needs.build.outputs.version }}+${{ matrix.minecraft }}-fabric
           version: ${{ needs.build.outputs.version }}+${{ matrix.minecraft }}-fabric
           version-type: release
-          changelog-file: CHANGELOG.md
+          changelog-file: build/release/RELEASE-NOTES.md
           loaders: fabric
           environment: server
           game-versions: ${{ matrix.minecraft }}
@@ -113,7 +108,7 @@ jobs:
       - uses: actions/download-artifact@v8.0.2
         with:
           name: invex-jars
-          path: build/libs
+          path: build/release
       - name: Publish GitHub release with both Minecraft targets
         uses: Kir-Antipov/mc-publish@v3.3.2
         with:
@@ -122,10 +117,10 @@ jobs:
           github-commitish: ${{ github.sha }}
           github-prerelease: false
           files: |
-            build/libs/invex-${{ needs.build.outputs.version }}-1.20.1.jar
-            build/libs/invex-${{ needs.build.outputs.version }}-1.21.1.jar
+            build/release/invex-${{ needs.build.outputs.version }}-1.20.1.jar
+            build/release/invex-${{ needs.build.outputs.version }}-1.21.1.jar
           name: Inventory EX ${{ needs.build.outputs.version }}
           version: ${{ needs.build.outputs.version }}
           version-type: release
-          changelog-file: CHANGELOG.md
+          changelog-file: build/release/RELEASE-NOTES.md
           fail-mode: fail

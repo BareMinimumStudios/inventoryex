@@ -116,7 +116,7 @@ The world must contain saved data for that player, and name suggestions depend o
 
 ## Building and publishing
 
-The current source version is **1.0.2**. The project uses **Gradle 9.9.2**, Kotlin, and Cloche, and builds both supported Minecraft targets together.
+The current source version is **1.0.3**. The project uses **Gradle 9.9.2**, Kotlin, and Cloche, and builds both supported Minecraft targets together.
 
 ```sh
 ./gradlew build
@@ -124,7 +124,7 @@ The current source version is **1.0.2**. The project uses **Gradle 9.9.2**, Kotl
 
 On Windows, use `gradlew.bat build`. Install Java 17 and 21; set `JDK17` and `JDK21` to their installation directories if Gradle cannot discover them.
 
-Run `python scripts/verify-release.py` to validate the release JARs. GitHub Actions builds pushes and pull requests; **MC Publish** uploads matching version tags to CurseForge, Modrinth, and GitHub Releases. Mod-page releases use names such as `1.0.2+1.21.1-fabric`; GitHub collects both Minecraft JARs in one versioned release. Manual workflow runs build by default and upload only when **Publish** is selected. See [PUBLISHING.md](PUBLISHING.md) for the release procedure and required repository secrets.
+Run `python scripts/verify-release.py` to validate the release JARs. GitHub Actions builds pushes and pull requests; **MC Publish** uploads matching version tags to CurseForge, Modrinth, and GitHub Releases. Mod-page releases use names such as `1.0.3+1.21.1-fabric`; GitHub collects both Minecraft JARs in one versioned release. Manual workflow runs build by default and upload only when **Publish** is selected. See [PUBLISHING.md](PUBLISHING.md) for the release procedure and required repository secrets.
 
 ## Authors and support
 

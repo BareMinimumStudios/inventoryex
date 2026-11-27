@@ -1,7 +1,5 @@
 package xyz.naomieow.invex.command
 
-import net.minecraft.world.level.storage.LevelResource
-import java.util.UUID
 import com.mojang.brigadier.StringReader
 import com.mojang.brigadier.suggestion.SuggestionProvider
 import me.lucko.fabric.api.permissions.v0.Permissions
@@ -9,6 +7,8 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback
 import net.minecraft.commands.CommandSourceStack
 import net.minecraft.commands.Commands
 import net.minecraft.commands.arguments.GameProfileArgument
+import net.minecraft.world.level.storage.LevelResource
+import java.util.UUID
 import xyz.naomieow.invex.InvEx
 import xyz.naomieow.invex.InvExPermissions
 import xyz.naomieow.invex.gui.AccSeeGUI
@@ -28,15 +28,14 @@ object InvExCommands {
         ctx.source.server.getWorldPath(LevelResource.PLAYER_DATA_DIR).toFile()
             .listFiles { file -> file.extension == "dat" }
             .orEmpty()
+            .asSequence()
             .mapNotNull { file ->
                 val uuid = runCatching { UUID.fromString(file.nameWithoutExtension) }.getOrNull()
                 uuid?.let { ctx.source.server.profileCache?.get(it)?.orElse(null)?.name }
             }
+            .plus(ctx.source.onlinePlayerNames.asSequence())
             .filter { it.startsWith(prefix, true) }
-            .forEach(builder::suggest)
-
-        ctx.source.onlinePlayerNames
-            .filter { it.startsWith(prefix, true) }
+            .distinctBy { it.lowercase() }
             .forEach(builder::suggest)
 
         builder.buildFuture()

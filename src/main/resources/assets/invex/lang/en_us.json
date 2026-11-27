@@ -5,7 +5,7 @@
   "invex.open.ender_chest": "Open Ender Chest",
   "invex.open.trinkets": "Open Trinkets",
   "invex.open.accessories": "Open Accessories",
-  "invex.command.error.one_player": "Only one player is allowed, but the provided selector allows more than one",
+  "invex.command.error.one_player": "Select exactly one player",
   "invex.command.error.player_not_found": "Given player not found",
   "invex.command.error.data_not_found": "Data for player %s not found",
   "invex.command.error.non_player_env": "Attempted to call command from non-player environment",

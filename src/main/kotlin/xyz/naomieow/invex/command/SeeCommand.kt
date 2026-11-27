@@ -13,41 +13,34 @@ import xyz.naomieow.invex.getOfflinePlayer
 object SeeCommand {
     fun executes(guiFn: (player: ServerPlayer, target: ServerPlayer) -> SeeGUI): (CommandContext<CommandSourceStack>) -> Int {
         return cb@ { ctx ->
+            val player = ctx.source.player
+            if (player == null) {
+                ctx.source.sendFailure(Component.translatableWithFallback(
+                    "invex.command.error.non_player_env",
+                    "Attempted to call command from non-player environment"
+                ))
+                return@cb 0
+            }
+
             val profiles = GameProfileArgument.getGameProfiles(ctx, "target")
             // Selectors must resolve to exactly one profile.
             if (profiles.size != 1) {
                 ctx.source.sendFailure(Component.translatableWithFallback(
                     "invex.command.error.one_player",
-                    "Only one player is allowed, but the provided selector allows more than one"
+                    "Select exactly one player"
                 ))
                 return@cb 0
             }
 
-            val targetPlayerProfile = profiles.firstOrNull()
-
-            if (targetPlayerProfile == null) {
-                ctx.source.sendFailure(Component.translatableWithFallback(
-                    "invex.command.error.player_not_found",
-                    "Given player not found"
-                ))
-                return@cb 0
-            }
+            val targetPlayerProfile = profiles.first()
 
             val targetPlayer = ctx.source.server.getOfflinePlayer(targetPlayerProfile)
 
             if (targetPlayer == null) {
                 ctx.source.sendFailure(Component.translatableWithFallback(
-                    "invex.command.data_not_found",
+                    "invex.command.error.data_not_found",
                     "Data for player %s not found",
                     targetPlayerProfile.name
-                ))
-                return@cb 0
-            }
-
-            if (ctx.source.player == null) {
-                ctx.source.sendFailure(Component.translatableWithFallback(
-                    "invex.command.error.non_player_env",
-                    "Attempted to call command from non-player environment"
                 ))
                 return@cb 0
             }
@@ -61,7 +54,7 @@ object SeeCommand {
                 return@cb 0
             }
 
-            val gui = guiFn(ctx.source.player!!, targetPlayer)
+            val gui = guiFn(player, targetPlayer)
             if (gui.open()) {
                 return@cb 1
             }

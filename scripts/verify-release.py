@@ -2,8 +2,9 @@
 import hashlib
 import json
 from pathlib import Path
-import re
 import zipfile
+
+from release_notes import extract_release, read_version
 
 
 def require(condition, message):
@@ -36,9 +37,8 @@ def verify_jar(jar, version, minecraft, java, icon):
 
 def main():
     root = Path(__file__).resolve().parents[1]
-    match = re.search(r'^version = "([^"]+)"', (root / "build.gradle.kts").read_text(encoding="utf-8"), re.M)
-    require(match is not None, "Cannot read release version from build.gradle.kts")
-    version = match.group(1)
+    version = read_version(root)
+    extract_release((root / "CHANGELOG.md").read_text(encoding="utf-8"), version)
     icon = (root / "src/main/resources/assets/invex/icon.png").read_bytes()
     for minecraft, java in (("1.20.1", 17), ("1.21.1", 21)):
         jar = root / "build/libs" / f"invex-{version}-{minecraft}.jar"
