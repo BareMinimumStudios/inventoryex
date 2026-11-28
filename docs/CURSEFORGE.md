@@ -1,5 +1,5 @@
 <p align="center" style="text-align: center;">
-<img src="https://raw.githubusercontent.com/BareMinimumStudios/invex/main/docs/assets/inventory-ex-banner.png" alt="Inventory EX banner" width="1080">
+<img src="https://raw.githubusercontent.com/BareMinimumStudios/invex/main/docs/assets/inventory-ex-banner.png" alt="Inventory EX pixel-art banner" width="1080">
 </p>
 
 <p align="center" style="text-align: center;">

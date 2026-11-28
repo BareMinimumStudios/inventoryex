@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/inventory-ex-banner.png" alt="Inventory EX" />
+  <img src="docs/assets/inventory-ex-banner.png" alt="Inventory EX pixel-art banner" width="1080" />
 </p>
 
 <p align="center">
