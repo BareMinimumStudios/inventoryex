@@ -1,12 +1,23 @@
-![Inventory EX](https://raw.githubusercontent.com/BareMinimumStudios/invex/main/docs/assets/inventory-ex-banner.png)
+<p align="center" style="text-align: center;">
+<img src="https://raw.githubusercontent.com/BareMinimumStudios/invex/main/docs/assets/inventory-ex-banner.png" alt="Inventory EX banner" width="1080">
+</p>
 
-**Fabric · Minecraft 1.20.1 and 1.21.1 · Server-side**
+<p align="center" style="text-align: center;">
+<a href="https://modrinth.com/mod/inventoryex"><img src="https://img.shields.io/badge/Modrinth-133329?logo=modrinth&amp;logoColor=8CFFCF&amp;style=for-the-badge" alt="Modrinth" height="28"></a>
+<a href="https://www.curseforge.com/minecraft/mc-mods/inventoryex"><img src="https://img.shields.io/badge/CurseForge-39232B?logo=curseforge&amp;logoColor=FFA880&amp;style=for-the-badge" alt="CurseForge" height="28"></a>
+<a href="https://github.com/BareMinimumStudios/invex"><img src="https://img.shields.io/badge/Source-242B49?logo=github&amp;logoColor=EAF0FF&amp;style=for-the-badge" alt="GitHub source" height="28"></a>
+<a href="https://github.com/BareMinimumStudios/invex/issues"><img src="https://img.shields.io/github/issues/BareMinimumStudios/invex?style=for-the-badge&amp;labelColor=242B49&amp;color=364775" alt="Report an issue" height="28"></a>
+<a href="https://github.com/BareMinimumStudios/invex/forks"><img src="https://img.shields.io/github/forks/BareMinimumStudios/invex?style=for-the-badge&amp;labelColor=242B49&amp;color=364775" alt="Forks" height="28"></a>
+<a href="https://github.com/BareMinimumStudios/invex/stargazers"><img src="https://img.shields.io/github/stars/BareMinimumStudios/invex?style=for-the-badge&amp;labelColor=242B49&amp;color=364775" alt="Stars" height="28"></a>
+</p>
+
+<p align="center" style="text-align: center;"><strong>Minecraft 1.20.1 and 1.21.1 · Fabric · Server-side</strong></p>
 
 # Inventory EX
 
-Inventory EX gives server staff a clear view of player inventories and Ender Chests, with permission-controlled editing and support for saved offline players. Optional Trinkets and Accessories integration brings equipment slots into the same workflow.
+Inventory EX lets server staff inspect player inventories and Ender Chests in-game, even when the target is offline. Give moderators read-only access or let trusted staff edit items. Trinkets and Accessories slots are available when those mods are installed.
 
-Install it on your Fabric server. Players do not need Inventory EX on their clients.
+Install Inventory EX on the Fabric server. Players can join with their usual clients.
 
 ## Features
 
@@ -113,10 +124,14 @@ Maintained by **Bare Minimum Studios**. Authors: [naomieow](https://github.com/n
 
 When reporting a problem, include your Minecraft and Inventory EX versions, the relevant command, your permissions setup, and whether the target was online or offline.
 
-## Sponsor
-
-[BisectHosting](https://bisecthosting.com/bareminimum) supports Bare Minimum Studios. Use code **`bareminimum`** for **25% off your first month**.
-
 ## License
 
 Inventory EX is licensed under the **Bare Minimum License v1.1**. See the [license](https://github.com/BareMinimumStudios/invex/blob/main/LICENSE).
+
+## Sponsor
+
+<p align="center" style="text-align: center;">
+<a href="https://bisecthosting.com/bareminimum"><img src="https://www.bisecthosting.com/partners/custom-banners/db76a74a-a111-4660-98b7-5a75c15a5951.png" alt="BisectHosting sponsor banner" width="1080"></a>
+</p>
+
+Use code **`bareminimum`** to get **25% off your first month**!
