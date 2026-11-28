@@ -3,12 +3,12 @@
 </p>
 
 <p align="center" style="text-align: center;">
-<a href="https://modrinth.com/mod/inventoryex"><img src="https://img.shields.io/badge/Modrinth-133329?logo=modrinth&amp;logoColor=8CFFCF&amp;style=for-the-badge" alt="Modrinth" height="28"></a>
-<a href="https://www.curseforge.com/minecraft/mc-mods/inventoryex"><img src="https://img.shields.io/badge/CurseForge-39232B?logo=curseforge&amp;logoColor=FFA880&amp;style=for-the-badge" alt="CurseForge" height="28"></a>
-<a href="https://github.com/BareMinimumStudios/invex"><img src="https://img.shields.io/badge/Source-242B49?logo=github&amp;logoColor=EAF0FF&amp;style=for-the-badge" alt="GitHub source" height="28"></a>
-<a href="https://github.com/BareMinimumStudios/invex/issues"><img src="https://img.shields.io/github/issues/BareMinimumStudios/invex?style=for-the-badge&amp;labelColor=242B49&amp;color=364775" alt="Report an issue" height="28"></a>
-<a href="https://github.com/BareMinimumStudios/invex/forks"><img src="https://img.shields.io/github/forks/BareMinimumStudios/invex?style=for-the-badge&amp;labelColor=242B49&amp;color=364775" alt="Forks" height="28"></a>
-<a href="https://github.com/BareMinimumStudios/invex/stargazers"><img src="https://img.shields.io/github/stars/BareMinimumStudios/invex?style=for-the-badge&amp;labelColor=242B49&amp;color=364775" alt="Stars" height="28"></a>
+<a href="https://modrinth.com/mod/inventoryex"><img src="https://img.shields.io/badge/Modrinth-182A20?logo=modrinth&amp;logoColor=79CF80&amp;style=for-the-badge" alt="Modrinth" height="28"></a>
+<a href="https://www.curseforge.com/minecraft/mc-mods/inventoryex"><img src="https://img.shields.io/badge/CurseForge-392022?logo=curseforge&amp;logoColor=FF8882&amp;style=for-the-badge" alt="CurseForge" height="28"></a>
+<a href="https://github.com/BareMinimumStudios/invex"><img src="https://img.shields.io/badge/Source-242424?logo=github&amp;logoColor=F5F1E7&amp;style=for-the-badge" alt="GitHub source" height="28"></a>
+<a href="https://github.com/BareMinimumStudios/invex/issues"><img src="https://img.shields.io/github/issues/BareMinimumStudios/invex?style=for-the-badge&amp;labelColor=242424&amp;color=943C39" alt="Report an issue" height="28"></a>
+<a href="https://github.com/BareMinimumStudios/invex/forks"><img src="https://img.shields.io/github/forks/BareMinimumStudios/invex?style=for-the-badge&amp;labelColor=242424&amp;color=34633A" alt="Forks" height="28"></a>
+<a href="https://github.com/BareMinimumStudios/invex/stargazers"><img src="https://img.shields.io/github/stars/BareMinimumStudios/invex?style=for-the-badge&amp;labelColor=242424&amp;color=795A20" alt="Stars" height="28"></a>
 </p>
 
 <p align="center" style="text-align: center;"><strong>Minecraft 1.20.1 and 1.21.1 · Fabric · Server-side</strong></p>
